@@ -2,15 +2,19 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { DateComponent } from './date/date.component';
 import { CityPipe } from './pipes/city.pipe';
 import { StatusColorPipe } from './pipes/status-color.pipe';
 import { StatusFilterPipe } from './pipes/status-filter.pipe';
-import { FormsModule } from '@angular/forms';
+
+import { TabbedPaneComponent } from './controls/tabbed-pane/tabbed-pane.component';
+import { TabComponent } from './controls/tab/tab.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TabbedPaneComponent, TabComponent],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
-  exports: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe, CommonModule, FormsModule]
+  exports: [CommonModule, FormsModule, DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe, TabbedPaneComponent, TabComponent]
 })
 export class SharedModule {}

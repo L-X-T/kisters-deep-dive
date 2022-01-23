@@ -1,0 +1,11 @@
+<div class="tabbed-pane">
+  <div class="navigation">
+    @for (tab of tabs; track tab.title) {
+      <span class="tab-link">
+        <a [class.active]="tab === activeTab" (click)="activate(tab)">{{ tab.title }}</a>
+      </span>
+    }
+  </div>
+
+  <ng-content>No content projected</ng-content>
+</div>
