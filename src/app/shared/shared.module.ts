@@ -14,9 +14,18 @@ import { TabComponent } from './controls/tab/tab.component';
 import { TabNavigatorComponent } from './controls/tab-navigator/tab-navigator.component';
 
 import { ClickWithWarningDirective } from './controls/click-with-warning.directive';
+import { TooltipDirective } from './tooltip.directive';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, TabbedPaneComponent, TabComponent, TabNavigatorComponent, ClickWithWarningDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TabbedPaneComponent,
+    TabComponent,
+    TabNavigatorComponent,
+    ClickWithWarningDirective,
+    TooltipDirective
+  ],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
   exports: [
     CommonModule,
@@ -28,7 +37,8 @@ import { ClickWithWarningDirective } from './controls/click-with-warning.directi
     TabbedPaneComponent,
     TabComponent,
     TabNavigatorComponent,
-    ClickWithWarningDirective
+    ClickWithWarningDirective,
+    TooltipDirective
   ]
 })
 export class SharedModule {}
