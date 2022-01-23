@@ -1,23 +1,18 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Flight } from './flight';
-// import { DefaultFlightService } from './default-flight.service';
-import { DummyFlightService } from './dummy-flight.service';
+import { FlightService } from './flight.service';
 
 @Injectable({
-  providedIn: 'root',
-  // useClass: DefaultFlightService,
-  useClass: DummyFlightService
+  providedIn: 'root'
 })
-export abstract class FlightService {
-  private readonly http = inject(HttpClient);
-  private readonly url = 'https://demo.angulararchitects.io/api/Flight';
-
-  // We will refactor this to an observable in a later exercise!
+export class DummyFlightService implements FlightService {
   flights: Flight[] = [];
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]);
   readonly flights$ = this.flightsSubject.asObservable();
+
+  constructor(public http: HttpClient) {}
 
   load(from: string, to: string): void {
     const unhandledSubscription = this.find(from, to).subscribe({
@@ -53,7 +48,19 @@ export abstract class FlightService {
     // this.flights = this.flights.map((f, i) => (i === 0 ? newFlight : f));
   }
 
-  abstract find(from: string, to: string): Observable<Flight[]>;
+  find(from: string, to: string): Observable<Flight[]> {
+    return of([
+      { id: 1, from: 'Frankfurt', to: 'Flagranti', date: '2022-01-02T19:00+01:00' },
+      { id: 2, from: 'Frankfurt', to: 'Kognito', date: '2022-01-02T19:30+01:00' },
+      { id: 3, from: 'Frankfurt', to: 'Mallorca', date: '2022-01-02T20:00+01:00' }
+    ]);
+  }
 
-  abstract findById(id: string): Observable<Flight>;
+  findById(id: string): Observable<Flight> {
+    return of(
+      { id: 1, from: 'Frankfurt', to: 'Flagranti', date: '2022-01-02T19:00+01:00' },
+      { id: 2, from: 'Frankfurt', to: 'Kognito', date: '2022-01-02T19:30+01:00' },
+      { id: 3, from: 'Frankfurt', to: 'Mallorca', date: '2022-01-02T20:00+01:00' }
+    );
+  }
 }

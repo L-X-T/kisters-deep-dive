@@ -1,23 +1,18 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Flight } from './flight';
-// import { DefaultFlightService } from './default-flight.service';
-import { DummyFlightService } from './dummy-flight.service';
+import { FlightService } from './flight.service';
 
 @Injectable({
-  providedIn: 'root',
-  // useClass: DefaultFlightService,
-  useClass: DummyFlightService
+  providedIn: 'root'
 })
-export abstract class FlightService {
-  private readonly http = inject(HttpClient);
-  private readonly url = 'https://demo.angulararchitects.io/api/Flight';
-
-  // We will refactor this to an observable in a later exercise!
+export class DefaultFlightService implements FlightService {
   flights: Flight[] = [];
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]);
   readonly flights$ = this.flightsSubject.asObservable();
+
+  constructor(public http: HttpClient) {}
 
   load(from: string, to: string): void {
     const unhandledSubscription = this.find(from, to).subscribe({
@@ -53,7 +48,19 @@ export abstract class FlightService {
     // this.flights = this.flights.map((f, i) => (i === 0 ? newFlight : f));
   }
 
-  abstract find(from: string, to: string): Observable<Flight[]>;
+  find(from: string, to: string): Observable<Flight[]> {
+    const url = 'http://www.angular.at/api/flight';
+    const headers = new HttpHeaders().set('Accept', 'application/json');
+    const params = new HttpParams().set('from', from).set('to', to);
 
-  abstract findById(id: string): Observable<Flight>;
+    return this.http.get<Flight[]>(url, { headers, params });
+  }
+
+  findById(id: string): Observable<Flight> {
+    const url = 'http://www.angular.at/api/flight';
+    const headers = new HttpHeaders().set('Accept', 'application/json');
+    const params = new HttpParams().set('id', id);
+
+    return this.http.get<Flight>(url, { headers, params });
+  }
 }
