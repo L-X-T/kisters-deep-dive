@@ -7,11 +7,11 @@ import { Flight } from './flight';
 
 import { createFlightService } from './flight-service.factory';
 
-@Injectable({
+@Injectable(/*{
   providedIn: 'root',
   useFactory: createFlightService,
   deps: [HttpClient]
-})
+}*/)
 export abstract class FlightService {
   private readonly http = inject(HttpClient);
   private readonly url = 'https://demo.angulararchitects.io/api/Flight';
