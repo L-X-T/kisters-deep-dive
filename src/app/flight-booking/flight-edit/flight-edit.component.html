@@ -1,10 +1,14 @@
 <h1>Flight Edit</h1>
 
-<p>
-  Id: {{ id }}
-</p>
-<p>
-  ShowDetail: {{ showDetails }}
-</p>
+<p>Id: {{ id }}</p>
+<p>ShowDetail: {{ showDetails }}</p>
 
 <button class="btn btn-warning" (click)="onRoute()">Route</button>
+
+<div *ngIf="showWarning" class="alert alert-warning" style="z-index: 99999">
+  <p>Data not saved. Do you really want to leave me?</p>
+  <p>
+    <button class="btn btn-default" (click)="decide(true)">Yes</button>
+    <button class="btn btn-default" (click)="decide(false)">No</button>
+  </p>
+</div>
