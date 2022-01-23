@@ -15,6 +15,8 @@ import { TabNavigatorComponent } from './controls/tab-navigator/tab-navigator.co
 
 import { ClickWithWarningDirective } from './controls/click-with-warning.directive';
 import { TooltipDirective } from './tooltip.directive';
+import { TableFieldDirective } from './controls/data-table/table-field.directive';
+import { DataTableComponent } from './controls/data-table/data-table.component';
 
 @NgModule({
   imports: [
@@ -24,7 +26,9 @@ import { TooltipDirective } from './tooltip.directive';
     TabComponent,
     TabNavigatorComponent,
     ClickWithWarningDirective,
-    TooltipDirective
+    TooltipDirective,
+    TableFieldDirective,
+    DataTableComponent
   ],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
   exports: [
@@ -38,7 +42,9 @@ import { TooltipDirective } from './tooltip.directive';
     TabComponent,
     TabNavigatorComponent,
     ClickWithWarningDirective,
-    TooltipDirective
+    TooltipDirective,
+    TableFieldDirective,
+    DataTableComponent
   ]
 })
 export class SharedModule {}

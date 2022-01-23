@@ -5,6 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 
 import { FlightSearchComponent } from '../flight-booking/flight-search/flight-search.component';
 
+import { Flight } from '../flight-booking/flight';
+
 @Component({
   selector: 'app-booking-history',
   imports: [CommonModule, SharedModule],
@@ -15,6 +17,12 @@ export class BookingHistoryComponent implements OnInit {
   @ViewChild('pageTitle', { read: ViewContainerRef, static: true }) pageTitle?: ViewContainerRef;
 
   flightSearchComponent = FlightSearchComponent;
+
+  flights: Flight[] = [
+    { id: 1, from: 'Hamburg', to: 'Berlin', date: '2025-02-01T17:00+01:00' },
+    { id: 2, from: 'Hamburg', to: 'Frankfurt', date: '2025-02-01T17:30+01:00' },
+    { id: 3, from: 'Hamburg', to: 'Mallorca', date: '2025-02-01T17:45+01:00' }
+  ];
 
   ngOnInit(): void {
     this.createComponentBelowPageTitle();
