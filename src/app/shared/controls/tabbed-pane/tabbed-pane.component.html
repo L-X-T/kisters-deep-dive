@@ -8,4 +8,17 @@
   </div>
 
   <ng-content>No content projected</ng-content>
+
+  <app-tab-navigator
+    #navigator
+    [page]="currentPage"
+    [pageCount]="tabs.length"
+    (pageChange)="pageChange($event)">
+  </app-tab-navigator>
+
+  <div>
+    <button (click)="navigator.prev()">Prev</button>
+    {{navigator.page}}
+    <button (click)="navigator.next()">Next</button>
+  </div>
 </div>

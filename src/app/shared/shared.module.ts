@@ -11,10 +11,21 @@ import { StatusFilterPipe } from './pipes/status-filter.pipe';
 
 import { TabbedPaneComponent } from './controls/tabbed-pane/tabbed-pane.component';
 import { TabComponent } from './controls/tab/tab.component';
+import { TabNavigatorComponent } from './controls/tab-navigator/tab-navigator.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, TabbedPaneComponent, TabComponent],
+  imports: [CommonModule, FormsModule, TabbedPaneComponent, TabComponent, TabNavigatorComponent],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
-  exports: [CommonModule, FormsModule, DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe, TabbedPaneComponent, TabComponent]
+  exports: [
+    CommonModule,
+    FormsModule,
+    DateComponent,
+    CityPipe,
+    StatusColorPipe,
+    StatusFilterPipe,
+    TabbedPaneComponent,
+    TabComponent,
+    TabNavigatorComponent
+  ]
 })
 export class SharedModule {}
