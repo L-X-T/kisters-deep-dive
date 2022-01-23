@@ -13,7 +13,7 @@
     <p>
       <button (click)="select()" *ngIf="!selected" class="btn btn-default">Select</button>
       <button (click)="deselect()" *ngIf="selected" class="btn btn-default">Remove</button>
-      <a [routerLink]="['../flight-edit', item.id, {showDetails:false}]" class="btn btn-default">Edit</a>
+      <a [routerLink]="['/flight-booking', 'flight-edit', item.id, { showDetails:false }]" class="btn btn-default">Edit</a>
     </p>
   </div>
 
