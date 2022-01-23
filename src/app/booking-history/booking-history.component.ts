@@ -9,4 +9,8 @@ import { SharedModule } from '../shared/shared.module';
   templateUrl: './booking-history.component.html',
   styleUrls: ['./booking-history.component.scss']
 })
-export class BookingHistoryComponent {}
+export class BookingHistoryComponent {
+  delete(): void {
+    console.debug('delete ...');
+  }
+}
