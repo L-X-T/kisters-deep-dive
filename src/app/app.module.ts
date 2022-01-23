@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { FlightBookingModule } from './flight-booking/flight-booking.module';
+// import { FlightBookingModule } from './flight-booking/flight-booking.module';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -17,7 +17,13 @@ import { BasketComponent } from './basket/basket.component';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES), BrowserModule, FlightBookingModule, SharedModule, BookingHistoryComponent],
+  imports: [
+    RouterModule.forRoot(APP_ROUTES),
+    BrowserModule,
+    // FlightBookingModule,
+    SharedModule,
+    BookingHistoryComponent
+  ],
   declarations: [AppComponent, SidebarComponent, NavbarComponent, HomeComponent, AboutComponent, NotFoundComponent, BasketComponent],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
