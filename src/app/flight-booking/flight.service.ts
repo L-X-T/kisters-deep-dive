@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Flight } from './flight';
 
 @Injectable({
@@ -12,10 +12,13 @@ export class FlightService {
 
   // We will refactor this to an observable in a later exercise!
   flights: Flight[] = [];
+  private flightsSubject = new BehaviorSubject<Flight[]>([]);
+  readonly flights$ = this.flightsSubject.asObservable();
 
   load(from: string, to: string): void {
     const unhandledSubscription = this.find(from, to).subscribe({
       next: (flights) => {
+        this.flightsSubject.next(flights);
         this.flights = flights;
       },
       error: (err) => {
@@ -47,7 +50,9 @@ export class FlightService {
     // Immutable
     const newDate = new Date(oldDate.getTime() + 15 * ONE_MINUTE);
     const newFlight: Flight = { ...oldFlight, date: newDate.toISOString() };
-    this.flights = [newFlight, ...oldFlights.slice(1)];
+    const newFlights = [newFlight, ...oldFlights.slice(1)];
+    this.flightsSubject.next(newFlights);
+    this.flights = newFlights;
 
     // Alternatives
     // this.flights.splice(0, 1, newFlight);
