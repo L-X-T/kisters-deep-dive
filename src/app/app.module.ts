@@ -10,7 +10,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { SharedModule } from './shared/shared.module';
 import { BasketComponent } from './basket/basket.component';
@@ -18,7 +18,9 @@ import { BookingHistoryComponent } from './booking-history/booking-history.compo
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(APP_ROUTES),
+    RouterModule.forRoot(APP_ROUTES, {
+      preloadingStrategy: PreloadAllModules
+    }),
     BrowserModule,
     // FlightBookingModule,
     SharedModule,
