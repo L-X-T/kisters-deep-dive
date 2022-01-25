@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="header">
+    <h1 class="title">Airports</h1>
+  </div>
+
+  <div class="content">
+    <div class="row">
+      <h2 class="col-12">subscription / takeUntil</h2>
+    </div>
+
+    <ng-container *ngIf="!isLoading; else isLoadingAirports">
+      <div *ngIf="airports.length > 0; else noAirportsFound" class="row">
+        <div *ngFor="let airport of airports" class="col-sm-6 col-md-4 col-lg-3">
+          {{ airport }}
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="row">
+      <h2 class="col-12">takeUntilDestroyed</h2>
+    </div>
+
+    <!-- var 2.16 takeUntilDestroyed -->
+    <ng-container *ngIf="airportsSuperLean$ | async as superLeanAirports; else isLoadingAirports">
+      <div *ngIf="superLeanAirports.length > 0; else noAirportsFound" class="row">
+        <div *ngFor="let airport of superLeanAirports" class="col-sm-6 col-md-4 col-lg-3">
+          {{ airport }}
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="row">
+      <h2 class="col-12">aysnc pipe</h2>
+    </div>
+
+    <!-- var 3a async pipe -->
+    @let asyncAirports = airportsBack$ | async;
+    @if (asyncAirports) {
+    <div class="row">
+      @for (airport of asyncAirports; track $index) {
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        {{ airport }}
+      </div>
+      } @empty {
+      <div class="col-sm-6 col-md-4 col-lg-3">
+        No airports found
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="row">Loading airports ...</div>
+    }
+
+    <ng-container *ngIf="airports$ | async as asyncAirports; else isLoadingAirports">
+      <div *ngIf="asyncAirports.length > 0; else noAirportsFound" class="row">
+        <div *ngFor="let airport of asyncAirports" class="col-sm-6 col-md-4 col-lg-3">
+          {{ airport }}
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- var 3b async pipe using an object (always true) -->
+    <ng-container *ngIf="{ airports: airports$ | async } as data">
+      <ng-container *ngIf="data.airports; else isLoadingAirports">
+        <div *ngIf="data.airports && data.airports.length > 0; else noAirportsFound" class="row">
+          <div *ngFor="let airport of data.airports" class="col-sm-6 col-md-4 col-lg-3">
+            {{ airport }}
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #noAirportsFound>
+  <div class="row">No airports found</div>
+</ng-template>
+
+<ng-template #isLoadingAirports>
+  <div class="row">Loading airports ...</div>
+</ng-template>

@@ -10,9 +10,10 @@ import { FLIGHT_BOOKING_ROUTES } from './flight-booking.routes';
 import { FlightBookingComponent } from './flight-booking.component';
 import { FlightEditComponent } from './flight-edit/flight-edit.component';
 import { FormsModule } from '@angular/forms';
+import { AirportComponent } from './airport/airport.component';
 
 @NgModule({
-  imports: [RouterModule.forChild(FLIGHT_BOOKING_ROUTES), FormsModule, SharedModule],
+  imports: [RouterModule.forChild(FLIGHT_BOOKING_ROUTES), FormsModule, SharedModule, AirportComponent],
   declarations: [FlightSearchComponent, FlightCardComponent, PassengerSearchComponent, FlightBookingComponent, FlightEditComponent],
   exports: [FlightSearchComponent]
 })
