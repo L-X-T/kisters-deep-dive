@@ -20,6 +20,7 @@ import { DataTableComponent } from './controls/data-table/data-table.component';
 
 import { CityValidatorDirective } from './validation/city-validator.directive';
 import { AsyncCityValidatorDirective } from './validation/async-city-validator.directive';
+import { MultiFieldValidatorDirective } from './validation/multi-field-validator.directive';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { AsyncCityValidatorDirective } from './validation/async-city-validator.d
     TableFieldDirective,
     DataTableComponent,
     CityValidatorDirective,
-    AsyncCityValidatorDirective
+    AsyncCityValidatorDirective,
+    MultiFieldValidatorDirective
   ],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
   exports: [
@@ -51,7 +53,8 @@ import { AsyncCityValidatorDirective } from './validation/async-city-validator.d
     TableFieldDirective,
     DataTableComponent,
     CityValidatorDirective,
-    AsyncCityValidatorDirective
+    AsyncCityValidatorDirective,
+    MultiFieldValidatorDirective
   ]
 })
 export class SharedModule {}

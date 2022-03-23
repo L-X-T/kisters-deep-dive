@@ -2,7 +2,7 @@
 
 <h1>Flight Search</h1>
 
-<form #form="ngForm">
+<form #form="ngForm" roundTrip>
   <div class="form-group">
     <label>From *:</label>
     <input [(ngModel)]="from"
@@ -42,6 +42,8 @@
     <input [(ngModel)]="delayFilter" id="delayFilter" type="checkbox" name="delayFilter">
     <label for="delayFilter">Delayed</label>
   </div>
+
+  <app-flight-validation-errors [errors]="form.errors" [fieldLabel]="'Form'" />
 
   <div class="form-group" *ngIf="flights$ | async as flights">
     <button (click)="search()" class="btn btn-default">
