@@ -2,7 +2,7 @@
 
 <h1>Flight Search</h1>
 
-<form #form="ngForm" [roundTrip]="['from','to']">
+<form #form="ngForm" [roundTrip]="['from','to']" [asyncMulti]="['from','to']">
   <div class="form-group">
     <label>From *:</label>
     <input [(ngModel)]="from"
@@ -38,6 +38,8 @@
                                 fieldLabel="To"
                                 [errors]="form.controls['to'].errors" />
 
+  <div *ngIf="form.pending">... Executing Async Multi Field Validator ...</div>
+
   <div class="form-group">
     <input [(ngModel)]="delayFilter" id="delayFilter" type="checkbox" name="delayFilter">
     <label for="delayFilter">Delayed</label>
@@ -46,7 +48,8 @@
   <app-flight-validation-errors [errors]="form.errors" [fieldLabel]="'Form'" />
 
   <div class="form-group" *ngIf="flights$ | async as flights">
-    <button (click)="search()" class="btn btn-default">
+    <button [disabled]="!to || !from || form.invalid || form.pending"
+            (click)="search()" class="btn btn-default">
       Search
     </button>
 
