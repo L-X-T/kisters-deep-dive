@@ -12,7 +12,8 @@
            required="required"
            minlength="3"
            maxlength="15"
-           pattern="[a-zA-ZäöüÄÖÜß ]*">
+           pattern="[a-zA-ZäöüÄÖÜß ]*"
+           city>
   </div>
 
   <app-flight-validation-errors *ngIf="form.controls['from']?.dirty"

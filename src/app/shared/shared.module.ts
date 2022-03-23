@@ -18,6 +18,8 @@ import { TooltipDirective } from './tooltip.directive';
 import { TableFieldDirective } from './controls/data-table/table-field.directive';
 import { DataTableComponent } from './controls/data-table/data-table.component';
 
+import { CityValidatorDirective } from './validation/city-validator.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { DataTableComponent } from './controls/data-table/data-table.component';
     ClickWithWarningDirective,
     TooltipDirective,
     TableFieldDirective,
-    DataTableComponent
+    DataTableComponent,
+    CityValidatorDirective
   ],
   declarations: [DateComponent, CityPipe, StatusColorPipe, StatusFilterPipe],
   exports: [
@@ -44,7 +47,8 @@ import { DataTableComponent } from './controls/data-table/data-table.component';
     ClickWithWarningDirective,
     TooltipDirective,
     TableFieldDirective,
-    DataTableComponent
+    DataTableComponent,
+    CityValidatorDirective
   ]
 })
 export class SharedModule {}
