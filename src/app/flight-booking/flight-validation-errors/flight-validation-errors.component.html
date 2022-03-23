@@ -11,3 +11,7 @@
 <div class="alert alert-danger" *ngIf="errors?.city" role="alert">
   {{ fieldLabel }} is "{{ errors?.city.actualCity }}" but should be one of "{{ errors?.city.validCities }}".
 </div>
+
+<div class="alert alert-danger" *ngIf="errors?.asyncCity" role="alert">
+  Async: No flights found with "{{ errors?.asyncCity.value }}" as {{ fieldLabel }}.
+</div>
