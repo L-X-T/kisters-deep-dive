@@ -1,4 +1,5 @@
-<h1>Booking History</h1>
+<h1 #pageTitle>Booking History Playground</h1>
+<hr />
 
 <app-tabbed-pane>
   <app-tab title="Upcoming Flights">
@@ -13,6 +14,7 @@
     <p>No cancelled flights!</p>
   </app-tab>
 </app-tabbed-pane>
+<hr />
 
 <button (appClickWithWarning)="delete()" #cww="clickWithWarning">Delete</button>
 
@@ -20,6 +22,9 @@
 <button class="btn btn-danger" (click)="cww.handleClick(true)">Delete without asking questions!</button>
 
 <div>
+  <hr />
+  <h2>Create View dynamically via ViewContainerRef</h2>
+
   <input [appTooltip]="tmpl" />
 
   <ng-template #tmpl>
@@ -28,4 +33,15 @@
       <li>Don't tell everything!</li>
     </ol>
   </ng-template>
+</div>
+
+<div>
+  <hr />
+  <h2>Create View in template via Outlet</h2>
+
+  <ng-container *ngTemplateOutlet="tmpl2"></ng-container>
+
+  <ng-template #tmpl2><h3>Hello world!</h3></ng-template>
+
+  <ng-container *ngComponentOutlet="flightSearchComponent"></ng-container>
 </div>

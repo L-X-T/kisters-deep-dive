@@ -12,8 +12,10 @@ export class ClickWithWarningDirective {
   @HostBinding('class') classBinding = 'btn btn-danger';
 
   // add HostListener
-  @HostListener('click', ['$event.shiftKey'])
-  handleClick(shiftKey: boolean): void {
+  @HostListener('click', ['$event.shiftKey', '$event'])
+  handleClick(shiftKey: boolean, event?: PointerEvent): void {
+    console.log(event);
+
     if (shiftKey || confirm(this.warning)) {
       this.appClickWithWarning.emit();
     }
