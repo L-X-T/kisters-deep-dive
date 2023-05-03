@@ -2,7 +2,6 @@
 
 import { Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
-import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { BasketComponent } from './basket/basket.component';
@@ -15,7 +14,7 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'booking-history',
-    component: BookingHistoryComponent
+    loadComponent: () => import('./booking-history/booking-history.component').then((c) => c.BookingHistoryComponent)
   },
   {
     path: 'home',
@@ -32,7 +31,7 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'flight-booking',
-    loadChildren: () => import('./flight-booking/flight-booking.module').then((esm) => esm.FlightBookingModule),
+    loadChildren: () => import('./flight-booking/flight-booking.module').then((m) => m.FlightBookingModule),
     data: {
       preload: true
     }

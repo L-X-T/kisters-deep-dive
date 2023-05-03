@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { SharedModule } from './shared/shared.module';
 import { BasketComponent } from './basket/basket.component';
-import { BookingHistoryComponent } from './booking-history/booking-history.component';
+// import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 
 @NgModule({
@@ -25,8 +25,8 @@ import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
     }),
     BrowserModule,
     // FlightBookingModule,
-    SharedModule,
-    BookingHistoryComponent
+    SharedModule
+    // BookingHistoryComponent
   ],
   declarations: [AppComponent, SidebarComponent, NavbarComponent, HomeComponent, AboutComponent, NotFoundComponent, BasketComponent],
   providers: [provideHttpClient(withInterceptorsFromDi())],
