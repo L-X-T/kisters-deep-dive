@@ -1,9 +1,10 @@
 // src/app/flight-search/flight-search.component.ts
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Flight } from '../flight';
 import { FlightService } from '../flight.service';
 import { DefaultFlightService } from '../default-flight.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-flight-search',
@@ -18,8 +19,9 @@ import { DefaultFlightService } from '../default-flight.service';
   ]
 })
 export class FlightSearchComponent {
+  @ViewChild('form') flightSearchForm?: NgForm;
   from = '';
-  to = 'Graz';
+  to = '';
   selectedFlight: Flight | null = null;
   delayFilter = false;
 
@@ -40,6 +42,11 @@ export class FlightSearchComponent {
   }
 
   search(): void {
+    if (this.flightSearchForm?.invalid) {
+      this.markFormGroupDirty(this.flightSearchForm);
+      return;
+    }
+
     this.flightService.load(this.from, this.to);
   }
 
@@ -49,5 +56,9 @@ export class FlightSearchComponent {
 
   delay(): void {
     this.flightService.delay();
+  }
+
+  private markFormGroupDirty(formGroup: NgForm): void {
+    Object.values(formGroup.controls).forEach((c) => c.markAsDirty());
   }
 }
