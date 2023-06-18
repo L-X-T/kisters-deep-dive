@@ -14,9 +14,10 @@ import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { SharedModule } from './shared/shared.module';
 import { BasketComponent } from './basket/basket.component';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES), BrowserModule, FlightBookingModule, SharedModule],
+  imports: [RouterModule.forRoot(APP_ROUTES), BrowserModule, FlightBookingModule, SharedModule, BookingHistoryComponent],
   declarations: [AppComponent, SidebarComponent, NavbarComponent, HomeComponent, AboutComponent, NotFoundComponent, BasketComponent],
   providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
