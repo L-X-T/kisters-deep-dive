@@ -1,6 +1,6 @@
 // src/app/flight-search/flight-search.component.ts
 
-import { Component, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Flight } from '../flight';
@@ -10,7 +10,8 @@ import { FlightService } from '../flight.service';
   selector: 'app-flight-search',
   templateUrl: './flight-search.component.html',
   styleUrls: ['./flight-search.component.scss'],
-  standalone: false
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlightSearchComponent implements OnDestroy {
   from = 'Hamburg';
