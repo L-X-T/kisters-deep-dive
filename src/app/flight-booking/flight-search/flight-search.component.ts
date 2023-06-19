@@ -1,6 +1,8 @@
 // src/app/flight-search/flight-search.component.ts
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { Flight } from '../flight';
 import { FlightService } from '../flight.service';
 
@@ -10,7 +12,7 @@ import { FlightService } from '../flight.service';
   styleUrls: ['./flight-search.component.scss'],
   standalone: false
 })
-export class FlightSearchComponent {
+export class FlightSearchComponent implements OnDestroy {
   from = 'Hamburg';
   to = 'Graz';
   selectedFlight: Flight | null = null;
@@ -23,7 +25,14 @@ export class FlightSearchComponent {
     5: true
   };
 
+  flightsSignal = signal<Flight[]>([]);
+  private subscription?: Subscription;
+
   constructor(private flightService: FlightService) {}
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
+  }
 
   get flights() {
     // We will refactor this to an observable in a later exercise!
@@ -31,7 +40,10 @@ export class FlightSearchComponent {
   }
 
   search(): void {
-    this.flightService.load(this.from, this.to);
+    // this.flightService.load(this.from, this.to);
+
+    this.subscription?.unsubscribe();
+    this.subscription = this.flightService.find(this.from, this.to).subscribe((flights) => this.flightsSignal.set(flights));
   }
 
   select(f: Flight): void {
