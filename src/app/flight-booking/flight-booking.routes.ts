@@ -38,10 +38,10 @@ export const FLIGHT_BOOKING_ROUTES: Routes = [
       {
         path: 'flight-edit/:id',
         component: FlightEditComponent,
-        canDeactivate: [canDeactivateGuard],
-        resolve: {
+        canDeactivate: [canDeactivateGuard]
+        /*resolve: {
           flight: FlightResolver
-        }
+        }*/
       }
     ]
   }

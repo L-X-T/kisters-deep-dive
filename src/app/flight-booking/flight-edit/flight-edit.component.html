@@ -5,7 +5,13 @@
 
 <button class="btn btn-warning" (click)="onRoute()">Route</button>
 
-<pre>{{ flight | json }}</pre>
+<div>
+  <div *ngIf="isLoading" class="spinner-border text-secondary mt-3 ml-3" style="width: 3rem; height: 3rem" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+
+<pre *ngIf="isLoaded">{{ flight | json }}</pre>
 
 <div *ngIf="showWarning" class="alert alert-warning" style="z-index: 99999">
   <p>Data not saved. Do you really want to leave me?</p>

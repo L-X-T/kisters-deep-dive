@@ -3,9 +3,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay } from 'rxjs/operators';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subscription } from 'rxjs';
 import { CanComponentDeactivate } from '../../shared/deactivation/can-deactivate.guard';
 import { Flight } from '../flight';
+import { FlightService } from '../flight.service';
 
 @Component({
   selector: 'app-flight-edit',
@@ -14,6 +15,9 @@ import { Flight } from '../flight';
   standalone: false
 })
 export class FlightEditComponent implements OnInit, CanComponentDeactivate {
+  isLoading = true;
+  isLoaded = false;
+
   id = 0;
   showDetails = false;
 
@@ -21,8 +25,9 @@ export class FlightEditComponent implements OnInit, CanComponentDeactivate {
   showWarning = false;
 
   flight: Flight | undefined;
+  flightSubscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private flightService: FlightService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     console.log(this.router.url);
@@ -42,9 +47,26 @@ export class FlightEditComponent implements OnInit, CanComponentDeactivate {
       console.log('string:', idAsString);
     });
 
-    this.route.data.subscribe((data) => {
+    // no resolver!
+    /*this.route.data.subscribe((data) => {
       this.flight = data.flight;
-    });
+    });*/
+
+    // instead we load this here and use a loading spinner!
+    this.flightSubscription = this.flightService
+      .findById(this.route.snapshot.params.id)
+      .pipe(delay(2_000))
+      .subscribe({
+        next: (flight) => {
+          this.isLoading = false;
+          this.flight = flight;
+          this.isLoaded = true;
+        },
+        error: (flight) => {
+          this.isLoading = false;
+          this.isLoaded = false;
+        }
+      });
   }
 
   onRoute(): void {
