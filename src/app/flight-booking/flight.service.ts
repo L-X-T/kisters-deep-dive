@@ -2,16 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Flight } from './flight';
-// import { DefaultFlightService } from './default-flight.service';
-// import { DummyFlightService } from './dummy-flight.service';
 
-import { createFlightService } from './flight-service.factory';
+import { DefaultFlightService } from './default-flight.service';
 
-@Injectable(/*{
+@Injectable({
   providedIn: 'root',
-  useFactory: createFlightService,
+  useClass: DefaultFlightService,
+  // useFactory: (http: HttpClient) => (environment.production ? new DefaultFlightService(http) : new DummyFlightService(http)),
   deps: [HttpClient]
-}*/)
+})
 export abstract class FlightService {
   private readonly http = inject(HttpClient);
   private readonly url = 'https://demo.angulararchitects.io/api/Flight';
