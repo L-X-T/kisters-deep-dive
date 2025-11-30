@@ -5,7 +5,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FlightBookingModule } from './flight-booking/flight-booking.module';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
@@ -16,9 +16,9 @@ import { SharedModule } from './shared/shared.module';
 import { BasketComponent } from './basket/basket.component';
 
 @NgModule({
-  imports: [RouterModule.forRoot(APP_ROUTES), HttpClientModule, BrowserModule, FlightBookingModule, SharedModule],
+  imports: [RouterModule.forRoot(APP_ROUTES), BrowserModule, FlightBookingModule, SharedModule],
   declarations: [AppComponent, SidebarComponent, NavbarComponent, HomeComponent, AboutComponent, NotFoundComponent, BasketComponent],
-  providers: [],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
