@@ -6,7 +6,8 @@ import { Flight } from '../flight';
 @Component({
   selector: 'app-flight-card',
   templateUrl: './flight-card.component.html',
-  styleUrls: ['./flight-card.component.scss']
+  styleUrls: ['./flight-card.component.scss'],
+  standalone: false
 })
 export class FlightCardComponent implements OnInit, OnChanges {
   @Input({ required: true }) item!: Flight;

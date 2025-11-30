@@ -4,7 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'statusColor',
-  pure: true
+  pure: true,
+  standalone: false
 })
 export class StatusColorPipe implements PipeTransform {
   transform(delayed: boolean | undefined): string {

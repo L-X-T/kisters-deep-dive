@@ -7,7 +7,8 @@ import { FlightService } from '../flight.service';
 @Component({
   selector: 'app-flight-search',
   templateUrl: './flight-search.component.html',
-  styleUrls: ['./flight-search.component.scss']
+  styleUrls: ['./flight-search.component.scss'],
+  standalone: false
 })
 export class FlightSearchComponent {
   from = 'Hamburg';

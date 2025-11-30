@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 @Component({
   selector: 'app-date',
   templateUrl: './date.component.html',
-  styleUrls: ['./date.component.scss']
+  styleUrls: ['./date.component.scss'],
+  standalone: false
 })
 export class DateComponent implements OnInit, OnChanges {
   @Input() date: string | null = null;

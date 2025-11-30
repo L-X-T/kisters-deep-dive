@@ -6,7 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-flight-edit',
   templateUrl: './flight-edit.component.html',
-  styleUrls: ['./flight-edit.component.scss']
+  styleUrls: ['./flight-edit.component.scss'],
+  standalone: false
 })
 export class FlightEditComponent implements OnInit {
   id = 0;

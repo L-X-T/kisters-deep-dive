@@ -5,7 +5,8 @@ import { Flight } from '../../flight-booking/flight';
 
 @Pipe({
   name: 'statusFilter',
-  pure: true
+  pure: true,
+  standalone: false
 })
 export class StatusFilterPipe implements PipeTransform {
   transform(flights: Flight[], delayedFilter: boolean | undefined): Flight[] {

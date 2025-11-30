@@ -5,7 +5,8 @@ import { CityService } from './city.service';
 
 @Pipe({
   name: 'city',
-  pure: true
+  pure: true,
+  standalone: false
 })
 export class CityPipe implements PipeTransform, OnDestroy {
   constructor(private cityService: CityService) {}

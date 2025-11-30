@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-flight-booking',
   templateUrl: './flight-booking.component.html',
-  styleUrls: ['./flight-booking.component.scss']
+  styleUrls: ['./flight-booking.component.scss'],
+  standalone: false
 })
 export class FlightBookingComponent {}
