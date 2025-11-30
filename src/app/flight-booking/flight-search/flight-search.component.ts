@@ -51,6 +51,15 @@ export class FlightSearchComponent implements OnDestroy {
   }
 
   delay(): void {
-    this.flightService.delay();
+    // this.flightService.delay();
+
+    if (this.flightsSignal().length > 0) {
+      this.flightsSignal.mutate((flights) => {
+        const ONE_MINUTE = 1000 * 60;
+        const oldDate = new Date(flights[0].date);
+        const newDate = new Date(oldDate.getTime() + 15 * ONE_MINUTE);
+        flights[0].date = newDate.toISOString();
+      });
+    }
   }
 }
