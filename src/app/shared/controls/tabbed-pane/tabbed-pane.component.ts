@@ -1,74 +1,69 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChild, ContentChildren, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  contentChildren,
+  DestroyRef,
+  effect,
+  inject,
+  viewChild
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { TabComponent } from '../tab/tab.component';
 import { TabNavigatorComponent } from '../tab-navigator/tab-navigator.component';
 import { TabbedPaneService } from './tabbed-pane.service';
 
 @Component({
   selector: 'app-tabbed-pane',
-  templateUrl: './tabbed-pane.component.html',
   imports: [TabNavigatorComponent],
-  styleUrls: ['./tabbed-pane.component.scss']
+  templateUrl: './tabbed-pane.component.html',
+  styleUrls: ['./tabbed-pane.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TabbedPaneComponent implements OnInit, AfterContentInit, AfterViewInit {
-  private service = inject(TabbedPaneService);
+export class TabbedPaneComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly tabbedPaneService = inject(TabbedPaneService);
 
-  // @ContentChild(TabComponent)
-  // tabComponent?: TabComponent;
+  protected readonly tabs = contentChildren(TabComponent);
+  protected readonly navigator = viewChild<TabNavigatorComponent>('navigator');
 
-  @ContentChildren(TabComponent)
-  tabQueryList?: QueryList<TabComponent>;
+  private readonly hasTabs = computed(() => this.tabs().length > 0);
 
-  @ViewChild('navigator')
-  navigator?: TabNavigatorComponent;
+  protected activeTab?: TabComponent;
+  private currentPage = 1;
 
-  // @ViewChildren(TabNavigatorComponent)
-  // navigators?: QueryList<TabNavigatorComponent>;
-
-  activeTab?: TabComponent;
-  currentPage = 1;
-
-  get tabs(): TabComponent[] {
-    return this.tabQueryList?.toArray() ?? [];
-  }
-
-  ngOnInit(): void {
-    console.log(this.tabs);
-    console.log(this.navigator);
-  }
-
-  ngAfterContentInit(): void {
-    if (this.tabs.length > 0) {
-      console.log(this.tabs);
-      this.activate(this.tabs[0]);
-    }
-  }
-
-  ngAfterViewInit(): void {
-    this.service.pageCount.next(this.tabs.length);
-    this.service.currentPage.subscribe((page: number) => {
-      // Prevent cycle:
-      if (page === this.currentPage) {
-        return;
+  constructor() {
+    effect(() => {
+      if (this.hasTabs()) {
+        this.activate(this.tabs()[0]);
       }
-      this.pageChange(page);
+    });
+
+    afterNextRender(() => {
+      this.tabbedPaneService.pageCount.next(this.tabs().length);
+      this.tabbedPaneService.currentPage.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((page) => {
+        // Prevent cycle:
+        if (page === this.currentPage) {
+          return;
+        }
+        this.pageChange(page);
+      });
     });
   }
 
-  register(tab: TabComponent): void {
-    this.tabs.push(tab);
-  }
-
-  activate(active: TabComponent): void {
-    for (const tab of this.tabs) {
+  protected activate(active: TabComponent): void {
+    for (const tab of this.tabs()) {
       tab.visible.set(tab === active);
     }
     this.activeTab = active;
     // Update:
-    this.currentPage = this.tabs.indexOf(active) + 1;
-    this.service.currentPage.next(this.currentPage);
+    this.currentPage = this.tabs().indexOf(active) + 1;
+    this.tabbedPaneService.currentPage.next(this.currentPage);
   }
 
-  pageChange(page: number): void {
-    this.activate(this.tabs[page - 1]);
+  private pageChange(page: number): void {
+    this.activate(this.tabs()[page - 1]);
   }
 }

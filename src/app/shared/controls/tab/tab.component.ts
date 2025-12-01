@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
+
 import { TabbedPaneComponent } from '../tabbed-pane/tabbed-pane.component';
 
 @Component({
@@ -10,8 +11,4 @@ export class TabComponent {
   private readonly tabbedPaneComponent = inject(TabbedPaneComponent);
   readonly title = input.required<string>();
   readonly visible = signal(true);
-
-  constructor() {
-    this.tabbedPaneComponent.register(this);
-  }
 }

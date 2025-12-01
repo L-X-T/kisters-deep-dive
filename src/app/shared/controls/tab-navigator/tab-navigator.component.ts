@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { TabbedPaneService } from '../tabbed-pane/tabbed-pane.service';
@@ -6,13 +6,14 @@ import { TabbedPaneService } from '../tabbed-pane/tabbed-pane.service';
 @Component({
   selector: 'app-tab-navigator',
   templateUrl: './tab-navigator.component.html',
-  styleUrls: ['./tab-navigator.component.scss']
+  styleUrls: ['./tab-navigator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabNavigatorComponent {
   private readonly tabbedPaneService = inject(TabbedPaneService);
 
   page = 0;
-  pageCount = 0;
+  private pageCount = 0;
 
   constructor() {
     this.tabbedPaneService.pageCount.pipe(takeUntilDestroyed()).subscribe((pageCount) => {
