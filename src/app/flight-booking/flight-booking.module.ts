@@ -11,11 +11,21 @@ import { FlightBookingComponent } from './flight-booking.component';
 import { FlightEditComponent } from './flight-edit/flight-edit.component';
 import { FormsModule } from '@angular/forms';
 import { StatusColorPipe } from '../shared/pipes/status-color.pipe';
-import { DatePipe, JsonPipe } from '@angular/common';
+import { DatePipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import { CityPipe } from '../shared/pipes/city.pipe';
 
 @NgModule({
-  imports: [RouterModule.forChild(FLIGHT_BOOKING_ROUTES), FormsModule, DatePipe, JsonPipe, CityPipe, RouterLink, StatusColorPipe],
+  imports: [
+    RouterModule.forChild(FLIGHT_BOOKING_ROUTES),
+    FormsModule,
+    DatePipe,
+    JsonPipe,
+    NgFor,
+    NgIf,
+    CityPipe,
+    RouterLink,
+    StatusColorPipe
+  ],
   declarations: [FlightSearchComponent, FlightCardComponent, PassengerSearchComponent, FlightBookingComponent, FlightEditComponent],
   exports: [FlightSearchComponent]
 })

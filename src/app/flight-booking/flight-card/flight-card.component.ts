@@ -1,6 +1,6 @@
 // src/app/flight-card/flight-card.component.ts
 
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, NgZone, OnChanges, OnInit, SimpleChanges, inject, input, model, output } from '@angular/core';
 import { Flight } from '../flight';
 
 @Component({
@@ -10,20 +10,18 @@ import { Flight } from '../flight';
   standalone: false
 })
 export class FlightCardComponent implements OnInit, OnChanges {
-  @Input({ required: true }) item!: Flight;
-  @Input() selected = false;
-  @Output() selectedChange = new EventEmitter<boolean>();
+  private readonly element = inject(ElementRef);
+  private readonly zone = inject(NgZone);
 
-  constructor(private element: ElementRef, private zone: NgZone) {
-    console.debug('ctor', this.item);
+  readonly item = input.required<Flight>();
+  readonly selected = model(false);
+
+  ngOnInit(): void {
+    console.debug('ngOnInit', this.item());
   }
 
-  ngOnInit() {
-    console.debug('ngOnInit', this.item);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    console.debug('ngOnChanges', this.item);
+  ngOnChanges(changes: SimpleChanges): void {
+    console.debug('ngOnChanges', this.item());
 
     if (changes.item) {
       console.debug('ngOnChanges: item');
@@ -33,17 +31,7 @@ export class FlightCardComponent implements OnInit, OnChanges {
     }
   }
 
-  select() {
-    this.selected = true;
-    this.selectedChange.emit(true);
-  }
-
-  deselect() {
-    this.selected = false;
-    this.selectedChange.emit(false);
-  }
-
-  blink() {
+  blink(): void {
     // Dirty Hack used to visualize the change detector
     // let originalColor = this.element.nativeElement.firstChild.style.backgroundColor;
     this.element.nativeElement.firstChild.style.backgroundColor = 'crimson';
@@ -54,7 +42,5 @@ export class FlightCardComponent implements OnInit, OnChanges {
         this.element.nativeElement.firstChild.style.backgroundColor = 'white';
       }, 1000);
     });
-
-    return null;
   }
 }
