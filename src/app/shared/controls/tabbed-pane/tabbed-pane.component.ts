@@ -1,14 +1,4 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  ContentChild,
-  ContentChildren,
-  OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren
-} from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChild, ContentChildren, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import { TabComponent } from '../tab/tab.component';
 import { TabNavigatorComponent } from '../tab-navigator/tab-navigator.component';
 import { TabbedPaneService } from './tabbed-pane.service';
@@ -20,6 +10,8 @@ import { TabbedPaneService } from './tabbed-pane.service';
   styleUrls: ['./tabbed-pane.component.scss']
 })
 export class TabbedPaneComponent implements OnInit, AfterContentInit, AfterViewInit {
+  private service = inject(TabbedPaneService);
+
   // @ContentChild(TabComponent)
   // tabComponent?: TabComponent;
 
@@ -34,8 +26,6 @@ export class TabbedPaneComponent implements OnInit, AfterContentInit, AfterViewI
 
   activeTab?: TabComponent;
   currentPage = 1;
-
-  constructor(private service: TabbedPaneService) {}
 
   get tabs(): TabComponent[] {
     return this.tabQueryList?.toArray() ?? [];
@@ -70,7 +60,7 @@ export class TabbedPaneComponent implements OnInit, AfterContentInit, AfterViewI
 
   activate(active: TabComponent): void {
     for (const tab of this.tabs) {
-      tab.visible = tab === active;
+      tab.visible.set(tab === active);
     }
     this.activeTab = active;
     // Update:

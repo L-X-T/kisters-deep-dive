@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
 import { TabbedPaneComponent } from '../tabbed-pane/tabbed-pane.component';
 
 @Component({
@@ -7,10 +7,11 @@ import { TabbedPaneComponent } from '../tabbed-pane/tabbed-pane.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TabComponent {
-  @Input({ required: true }) title!: string;
-  visible = true;
+  private readonly tabbedPaneComponent = inject(TabbedPaneComponent);
+  readonly title = input.required<string>();
+  readonly visible = signal(true);
 
-  constructor(public tabbedPaneComponent: TabbedPaneComponent) {
+  constructor() {
     this.tabbedPaneComponent.register(this);
   }
 }

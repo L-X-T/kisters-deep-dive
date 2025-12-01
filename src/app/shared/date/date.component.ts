@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-date',
+  imports: [FormsModule],
   templateUrl: './date.component.html',
   styleUrls: ['./date.component.scss'],
-  standalone: false
 })
 export class DateComponent implements OnInit, OnChanges {
   @Input() date: string | null = null;

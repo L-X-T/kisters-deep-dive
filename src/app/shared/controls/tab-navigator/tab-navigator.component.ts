@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
 import { TabbedPaneService } from '../tabbed-pane/tabbed-pane.service';
 
 @Component({
@@ -6,18 +8,17 @@ import { TabbedPaneService } from '../tabbed-pane/tabbed-pane.service';
   templateUrl: './tab-navigator.component.html',
   styleUrls: ['./tab-navigator.component.scss']
 })
-export class TabNavigatorComponent implements OnInit {
+export class TabNavigatorComponent {
+  private readonly tabbedPaneService = inject(TabbedPaneService);
+
   page = 0;
   pageCount = 0;
 
-  // Inject service here:
-  constructor(private service: TabbedPaneService) {}
-
-  ngOnInit(): void {
-    this.service.pageCount.subscribe((pageCount) => {
+  constructor() {
+    this.tabbedPaneService.pageCount.pipe(takeUntilDestroyed()).subscribe((pageCount) => {
       this.pageCount = pageCount;
     });
-    this.service.currentPage.subscribe((page) => {
+    this.tabbedPaneService.currentPage.pipe(takeUntilDestroyed()).subscribe((page) => {
       this.page = page;
     });
   }
@@ -29,7 +30,7 @@ export class TabNavigatorComponent implements OnInit {
     this.page--;
 
     // Add: Notify service:
-    this.service.currentPage.next(this.page);
+    this.tabbedPaneService.currentPage.next(this.page);
   }
 
   next(): void {
@@ -39,6 +40,6 @@ export class TabNavigatorComponent implements OnInit {
     this.page++;
 
     // Add: Notify service:
-    this.service.currentPage.next(this.page);
+    this.tabbedPaneService.currentPage.next(this.page);
   }
 }
