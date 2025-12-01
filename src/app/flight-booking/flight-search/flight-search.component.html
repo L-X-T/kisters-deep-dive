@@ -23,21 +23,27 @@
       Search
     </button>
 
-    <button *ngIf="flightsSignal().length > 0" (click)="delay()" class="btn btn-default">
+    <button *ngIf="hasFlights()" (click)="delay()" class="btn btn-default">
       Delay
     </button>
 
-    <div *ngIf="flightsSignal().length > 0">
-      {{ flightsSignal().length }} flights found!
+    <div *ngIf="hasFlights()">
+      {{ flightsLength() }} flights found!
     </div>
   </div>
 </form>
 
 
 <div class="row">
-  <div *ngFor="let f of flightsSignal()" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
-    <app-flight-card [item]="f" [(selected)]="basket[f.id]" />
+  <div *ngFor="let flight of flightsSubject | async" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+    <app-flight-card [item]="flight" [(selected)]="basket[flight.id]" />
   </div>
+
+  @for (flight of flights(); track flight.id) {
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">
+    <app-flight-card [item]="flight" [(selected)]="basket[flight.id]" />
+  </div>
+  }
 </div>
 
 <b>Basket</b>

@@ -1,66 +1,85 @@
 // src/app/flight-search/flight-search.component.ts
 
-import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 import { Flight } from '../flight';
 import { FlightService } from '../flight.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-flight-search',
   templateUrl: './flight-search.component.html',
   styleUrls: ['./flight-search.component.scss'],
-  standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FlightSearchComponent implements OnDestroy {
-  from = 'Hamburg';
-  to = 'Graz';
-  selectedFlight: Flight | null = null;
-  delayFilter = false;
+export class FlightSearchComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly flightService = inject(FlightService);
 
-  basket: { [key: number]: boolean } = {
+  protected from = 'Hamburg';
+  protected to = 'Graz';
+  protected selectedFlight: Flight | null = null;
+  protected delayFilter = false;
+
+  private toggle = signal(false);
+
+  protected readonly basket: { [key: number]: boolean } = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     3: true,
     // eslint-disable-next-line @typescript-eslint/naming-convention
     5: true
   };
 
-  flightsSignal = signal<Flight[]>([]);
-  private subscription?: Subscription;
+  protected readonly flightsSubject = new BehaviorSubject<Flight[]>([]);
+  protected readonly flights = signal<Flight[]>([]);
 
-  constructor(private flightService: FlightService) {}
+  protected readonly flightsLength = computed(() => this.flights().length);
+  protected readonly hasFlights = computed(() => this.flightsLength() > 0);
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+  constructor() {
+    effect(() => {
+      console.log('Flights length: ', this.flightsLength());
+      console.log('Has flights: ', this.hasFlights());
+    });
   }
 
-  get flights() {
-    // We will refactor this to an observable in a later exercise!
-    return this.flightService.flights;
-  }
-
-  search(): void {
+  protected search(): void {
     // this.flightService.load(this.from, this.to);
 
-    this.subscription?.unsubscribe();
-    this.subscription = this.flightService.find(this.from, this.to).subscribe((flights) => this.flightsSignal.set(flights));
+    this.flightService
+      .find(this.from, this.to)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((flights) => {
+        this.flightsSubject.next(flights);
+        this.flights.set(flights);
+      });
   }
 
-  select(f: Flight): void {
+  protected select(f: Flight): void {
     this.selectedFlight = f;
   }
 
-  delay(): void {
-    // this.flightService.delay();
-
-    if (this.flightsSignal().length > 0) {
-      this.flightsSignal.mutate((flights) => {
+  protected delay(): void {
+    if (this.flights().length > 0) {
+      this.flights.update((flights) => {
         const ONE_MINUTE = 1000 * 60;
         const oldDate = new Date(flights[0].date);
         const newDate = new Date(oldDate.getTime() + 15 * ONE_MINUTE);
         flights[0].date = newDate.toISOString();
+        return flights;
       });
+
+      const flights = this.flights();
+      const ONE_MINUTE = 1000 * 60;
+      const oldDate = new Date(flights[0].date);
+      const newDate = new Date(oldDate.getTime() + 15 * ONE_MINUTE);
+      flights[0].date = newDate.toISOString();
+      this.flights.set(flights);
     }
+  }
+
+  protected updateToggle(): void {
+    this.toggle.set(!this.toggle());
   }
 }
