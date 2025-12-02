@@ -1,19 +1,20 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Directive, input, output } from '@angular/core';
 
 @Directive({
-  selector: '[appClickWithWarning]'
+  selector: '[appClickWithWarning]',
+  host: {
+    class: 'btn btn-danger',
+    '(click)': 'handleClick($event.shiftKey)'
+  }
 })
 export class ClickWithWarningDirective {
- // add Input and Output
-  @Input() warning = 'Are you sure?';
-  @Output() appClickWithWarning = new EventEmitter<void>();
+  // add Input and Output
+  readonly warning = input('Are you sure?');
+  readonly appClickWithWarning = output<void>();
 
-  @HostBinding('class') classBinding = 'btn btn-danger';
-
-  // add HostListener
-  @HostListener('click', ['$event.shiftKey'])
+  // The logic inside the method remains exactly the same
   handleClick(shiftKey: boolean): void {
-    if (shiftKey || confirm(this.warning)) {
+    if (shiftKey || confirm(this.warning())) {
       this.appClickWithWarning.emit();
     }
   }
