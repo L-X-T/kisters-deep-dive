@@ -1,6 +1,6 @@
 // src/app/flight-card/flight-card.component.ts
 
-import { Component, ElementRef, NgZone, OnChanges, OnInit, SimpleChanges, inject, input, model, output } from '@angular/core';
+import { Component, ElementRef, NgZone, OnChanges, OnInit, SimpleChanges, inject, input, linkedSignal, model, output } from '@angular/core';
 import { Flight } from '../flight';
 
 @Component({
@@ -14,7 +14,9 @@ export class FlightCardComponent implements OnInit, OnChanges {
   private readonly zone = inject(NgZone);
 
   readonly item = input.required<Flight>();
-  readonly selected = model(false);
+  readonly selected = input(true);
+  // readonly selected = FlightBookingStore.selected;
+  readonly selectedInternal = linkedSignal(() => this.selected());
 
   ngOnInit(): void {
     console.debug('ngOnInit', this.item());
@@ -29,6 +31,18 @@ export class FlightCardComponent implements OnInit, OnChanges {
     if (changes.selected) {
       console.debug('ngOnChanges: selected');
     }
+  }
+
+  select(): void {
+    this.selectedInternal.set(true);
+  }
+
+  deselect(): void {
+    this.selectedInternal.set(false);
+  }
+
+  toggle(): void {
+    this.selectedInternal.set(!this.selectedInternal());
   }
 
   blink(): void {
