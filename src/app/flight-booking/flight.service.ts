@@ -1,5 +1,5 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Flight } from './flight';
 
@@ -7,10 +7,11 @@ import { Flight } from './flight';
   providedIn: 'root'
 })
 export class FlightService {
+  private readonly http = inject(HttpClient);
+  private readonly url = 'https://demo.angulararchitects.io/api/Flight';
+
   // We will refactor this to an observable in a later exercise!
   flights: Flight[] = [];
-
-  constructor(private http: HttpClient) {}
 
   load(from: string, to: string): void {
     const unhandledSubscription = this.find(from, to).subscribe({
@@ -24,19 +25,13 @@ export class FlightService {
   }
 
   find(from: string, to: string): Observable<Flight[]> {
-    const url = 'http://www.angular.at/api/flight';
-    const headers = new HttpHeaders().set('Accept', 'application/json');
     const params = new HttpParams().set('from', from).set('to', to);
-
-    return this.http.get<Flight[]>(url, { headers, params });
+    return this.http.get<Flight[]>(this.url, { params });
   }
 
   findById(id: string): Observable<Flight> {
-    const url = 'http://www.angular.at/api/flight';
-    const headers = new HttpHeaders().set('Accept', 'application/json');
     const params = new HttpParams().set('id', id);
-
-    return this.http.get<Flight>(url, { headers, params });
+    return this.http.get<Flight>(this.url, { params });
   }
 
   delay(): void {
