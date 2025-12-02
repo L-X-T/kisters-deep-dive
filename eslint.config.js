@@ -73,8 +73,8 @@ module.exports = tseslint.config(
       'max-len': [
         'warn',
         {
-          code: 120,
-          comments: 160
+          code: 140,
+          comments: 140
         }
       ],
       'max-lines': ['error', 400],
