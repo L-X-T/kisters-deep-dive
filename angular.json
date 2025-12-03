@@ -26,9 +26,14 @@
               "base": "dist/flight-app"
             },
             "index": "src/index.html",
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
               "node_modules/@angular-architects/paper-design/assets/css/bootstrap.css",
               "node_modules/@angular-architects/paper-design/assets/scss/paper-dashboard.scss",
@@ -36,7 +41,12 @@
             ],
             "stylePreprocessorOptions": {
               "sass": {
-                "silenceDeprecations": ["color-functions", "global-builtin", "import", "mixed-decls"]
+                "silenceDeprecations": [
+                  "color-functions",
+                  "global-builtin",
+                  "import",
+                  "mixed-decls"
+                ]
               }
             },
             "scripts": [],
@@ -98,17 +108,27 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "polyfills": ["src/polyfills.ts"],
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.spec.json",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         },
         "e2e": {
@@ -158,5 +178,11 @@
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": [
+      "@cypress/schematic",
+      "@schematics/angular"
+    ]
   }
 }
