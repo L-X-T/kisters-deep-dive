@@ -7,7 +7,7 @@ import { FlightService } from './flight.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DefaultFlightService implements FlightService {
+export class DefaultFlightService {
   flights: Flight[] = [];
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]);
   readonly flights$ = this.flightsSubject.asObservable();
@@ -49,7 +49,7 @@ export class DefaultFlightService implements FlightService {
   }
 
   find(from: string, to: string): Observable<Flight[]> {
-    const url = 'http://www.angular.at/api/flight';
+    const url = 'https://demo.angulararchitects.io/api/Flight';
     const headers = new HttpHeaders().set('Accept', 'application/json');
     const params = new HttpParams().set('from', from).set('to', to);
 
@@ -57,7 +57,7 @@ export class DefaultFlightService implements FlightService {
   }
 
   findById(id: string): Observable<Flight> {
-    const url = 'http://www.angular.at/api/flight';
+    const url = 'https://demo.angulararchitects.io/api/Flight';
     const headers = new HttpHeaders().set('Accept', 'application/json');
     const params = new HttpParams().set('id', id);
 

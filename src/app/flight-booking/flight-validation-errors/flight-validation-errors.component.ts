@@ -4,7 +4,8 @@ import { ValidationErrors } from '@angular/forms';
 @Component({
   selector: 'app-flight-validation-errors',
   templateUrl: './flight-validation-errors.component.html',
-  styleUrls: ['./flight-validation-errors.component.css']
+  styleUrls: ['./flight-validation-errors.component.css'],
+  standalone: false
 })
 export class FlightValidationErrorsComponent {
   @Input() errors: ValidationErrors | null | undefined;

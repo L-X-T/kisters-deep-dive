@@ -1,48 +1,54 @@
 <h1>Flight Edit</h1>
 
-<p>Id: {{ id }}</p>
-<p>ShowDetail: {{ showDetails }}</p>
+<p>Id: {{ id() }}</p>
+<p>ShowDetail: {{ showDetails() }}</p>
 
-<button class="btn btn-warning" (click)="onRoute()">Route</button>
+<button type="button" class="btn btn-warning" (click)="onRoute()">Route</button>
 
 <div>
-  <div *ngIf="isLoading" class="spinner-border text-secondary mt-3 ml-3" style="width: 3rem; height: 3rem" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
+  @if (isLoading) {
+    <div class="spinner-border text-secondary mt-3 ml-3" style="width: 3rem; height: 3rem" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  }
 </div>
 
-<pre *ngIf="isLoaded">{{ flight | json }}</pre>
+@if (isLoaded) {
+  <pre>{{ flight | json }}</pre>
+}
 
 <form [formGroup]="editForm">
   <div class="form-group">
-    <label>Id:</label>
-    <input formControlName="id" class="form-control" />
+    <label for="id">Id:</label>
+    <input id="id" formControlName="id" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label>From:</label>
-    <input formControlName="from" class="form-control" />
+    <label for="from">From:</label>
+    <input id="from" formControlName="from" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label>To:</label>
-    <input formControlName="to" class="form-control" />
+    <label for="to">To:</label>
+    <input id="to" formControlName="to" class="form-control" />
   </div>
 
   <div class="form-group">
-    <label>Date:</label>
-    <input formControlName="date" class="form-control" />
+    <label for="date">Date:</label>
+    <input id="date" formControlName="date" class="form-control" />
   </div>
 
   <div class="form-group">
-    <button (click)="save()" class="btn btn-default">Save</button>
+    <button type="button" class="btn btn-default" (click)="save()">Save</button>
   </div>
 </form>
 
-<div *ngIf="showWarning" class="alert alert-warning" style="z-index: 99999">
-  <p>Data not saved. Do you really want to leave me?</p>
-  <p>
-    <button class="btn btn-default" (click)="decide(true)">Yes</button>
-    <button class="btn btn-default" (click)="decide(false)">No</button>
-  </p>
-</div>
+@if (showWarning) {
+  <div class="alert alert-warning" style="z-index: 99999">
+    <p>Data not saved. Do you really want to leave me?</p>
+    <p>
+      <button type="button" class="btn btn-default" (click)="decide(true)">Yes</button>
+      <button type="button" class="btn btn-default" (click)="decide(false)">No</button>
+    </p>
+  </div>
+}

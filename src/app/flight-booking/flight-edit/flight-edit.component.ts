@@ -1,107 +1,80 @@
 // src/app/flight-booking/flight-edit/flight-edit.component.ts
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, DestroyRef, effect, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 import { delay } from 'rxjs/operators';
-import { Observable, Observer, Subscription } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { CanComponentDeactivate } from '../../shared/deactivation/can-deactivate.guard';
 import { Flight } from '../flight';
 import { FlightService } from '../flight.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-flight-edit',
+  // eslint-disable-next-line @angular-eslint/prefer-standalone
+  standalone: false,
   templateUrl: './flight-edit.component.html',
   styleUrls: ['./flight-edit.component.scss'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FlightEditComponent implements OnInit, OnDestroy, CanComponentDeactivate {
-  isLoading = true;
-  isLoaded = false;
+export class FlightEditComponent implements CanComponentDeactivate {
+  private readonly flightService = inject(FlightService);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
 
-  id = 0;
-  showDetails = false;
+  private readonly destroyRef = inject(DestroyRef);
 
-  sender: Observer<boolean> | undefined;
-  showWarning = false;
+  protected isLoading = true;
+  protected isLoaded = false;
 
-  flight: Flight | undefined;
-  flightSubscription?: Subscription;
+  readonly id = input(0);
+  readonly showDetails = input(false);
 
-  editForm: FormGroup;
+  protected sender?: Observer<boolean>;
+  protected showWarning = false;
 
-  valueChangesSubscription?: Subscription;
+  protected flight?: Flight;
 
-  constructor(private flightService: FlightService, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
-    this.editForm = this.fb.group({
-      id: [1],
-      from: [''],
-      to: [''],
-      date: ['']
-    });
-  }
+  protected readonly editForm = this.fb.group({
+    id: [1],
+    from: [''],
+    to: [''],
+    date: ['']
+  });
 
-  ngOnInit(): void {
-    console.log(this.router.url);
-    console.log(this.route.snapshot);
-    this.id = this.route.snapshot.params.id;
-    this.showDetails = this.route.snapshot.params.showDetails;
-
-    this.route.paramMap.pipe(delay(2000)).subscribe((p) => {
-      console.log('route params received:', p);
-
-      this.showDetails = p.get('showDetails') === 'true';
-      console.log('showDetails set to:', this.showDetails);
-
-      this.id = Number(p.get('id'));
-      const idAsString = '' + this.id;
-      console.log('number:', this.id);
-      console.log('string:', idAsString);
-    });
-
-    // no resolver!
-    /*this.route.data.subscribe((data) => {
-      this.flight = data.flight;
-      this.editForm.patchValue(data.flight);
-    });*/
-
-    // instead we load this here and use a loading spinner!
-    this.flightSubscription = this.flightService
-      .findById(this.route.snapshot.params.id)
-      .pipe(delay(2_000))
-      .subscribe({
-        next: (flight) => {
-          this.isLoading = false;
-          this.flight = flight;
-          this.editForm.patchValue(flight);
-          this.isLoaded = true;
-        },
-        error: (flight) => {
-          this.isLoading = false;
-          this.isLoaded = false;
-        }
-      });
-
-    console.log('value', this.editForm.value);
-    console.log('valid', this.editForm.valid);
-    console.log('touched', this.editForm.touched);
-    console.log('dirty', this.editForm.dirty);
-
-    this.valueChangesSubscription = this.editForm.valueChanges.subscribe((v) => {
+  constructor() {
+    this.editForm.valueChanges.pipe(takeUntilDestroyed()).subscribe((v) => {
       console.debug('valueChanges', v);
     });
-  }
 
-  ngOnDestroy(): void {
-    this.flightSubscription?.unsubscribe();
-    this.valueChangesSubscription?.unsubscribe();
-    this.valueChangesSubscription?.unsubscribe();
+    // instead we load this here and use a loading spinner!
+    effect(() => {
+      const flightId = this.id();
+      console.log(flightId, this.id());
+
+      this.flightService
+        .findById('' + flightId)
+        .pipe(delay(20), takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: (flight) => {
+            this.isLoading = false;
+            this.flight = flight;
+            this.editForm.patchValue(flight);
+            this.isLoaded = true;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.isLoaded = false;
+          }
+        });
+    });
   }
 
   onRoute(): void {
     const showDetails = !this.showDetails;
     this.router
-      .navigate(['flight-booking', 'flight-edit', this.id, { showDetails }])
+      .navigate(['flight-booking', 'flight-edit', this.id(), { showDetails }])
       .then(() => console.log('navigated to showDetails:', showDetails));
   }
 

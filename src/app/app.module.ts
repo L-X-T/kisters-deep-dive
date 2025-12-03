@@ -21,7 +21,8 @@ import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
   imports: [
     QuicklinkModule,
     RouterModule.forRoot(APP_ROUTES, {
-      preloadingStrategy: QuicklinkStrategy
+      preloadingStrategy: QuicklinkStrategy,
+      bindToComponentInputs: true
     }),
     BrowserModule,
     // FlightBookingModule,
