@@ -11,8 +11,8 @@ import { FlightService } from '../flight.service';
   standalone: false
 })
 export class FlightSearchComponent {
-  from = 'Hamburg';
-  to = 'Graz';
+  from = '';
+  to = '';
   selectedFlight: Flight | null = null;
   delayFilter = false;
 
