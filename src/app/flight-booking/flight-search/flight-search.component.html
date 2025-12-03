@@ -4,62 +4,50 @@
 
 <form #form="ngForm">
   <div class="form-group">
-    <label>From:</label>
-    <input [(ngModel)]="from"
-           [ngModelOptions]="{ updateOn: 'change'}"
-           name="from"
-           class="form-control"
-           required="required"
-           minlength="3"
-           maxlength="15"
-           pattern="[a-zA-ZäöüÄÖÜß ]*">
+    <label for="from">From:</label>
+    <input
+      [(ngModel)]="from"
+      name="from"
+      id="from"
+      class="form-control"
+      required="required"
+      minlength="3"
+      maxlength="15"
+      pattern="[a-zA-ZäöüÄÖÜß ]*"
+    />
   </div>
 
-  <div *ngIf="form?.controls?.from?.invalid || false" class="text-danger">
-    From is invalid.
-  </div>
-
-  <div *ngIf="form?.controls?.from?.hasError('required') || false" class="text-danger">
-    From is required.
-  </div>
-
-  <div *ngIf="form?.controls?.from?.hasError('minlength') || false" class="text-danger">
-    From minlength is 3.
-  </div>
-
-  <div *ngIf="form?.controls?.from?.hasError('maxlength') || false" class="text-danger">
-    From maxlength is 15.
-  </div>
-
-  <div *ngIf="form?.controls?.from?.hasError('pattern') || false" class="text-danger">
-    From has invalid input.
-  </div>
+  <app-flight-validation-errors [validationErrors]="form?.controls?.from?.errors" fieldLabel="From" />
 
   <div class="form-group">
-    <label>To:</label>
-    <input [(ngModel)]="to" name="to" class="form-control">
+    <label for="to">To:</label>
+    <input
+      [(ngModel)]="to"
+      name="to"
+      id="to"
+      class="form-control"
+      required="required"
+      minlength="3"
+      maxlength="15"
+      pattern="[a-zA-ZäöüÄÖÜß ]*"
+    />
   </div>
 
+  <app-flight-validation-errors [validationErrors]="form?.controls?.to?.errors" fieldLabel="To" />
+
   <div class="form-group">
-    <input [(ngModel)]="delayFilter" id="delayFilter" type="checkbox" name="delayFilter">
+    <input [(ngModel)]="delayFilter" id="delayFilter" type="checkbox" name="delayFilter" />
     <label for="delayFilter">Delayed</label>
   </div>
 
   <div class="form-group" *ngIf="flights$ | async as flights">
-    <button (click)="search()" class="btn btn-default">
-      Search
-    </button>
+    <button (click)="search()" class="btn btn-default">Search</button>
 
-    <button *ngIf="flights.length > 0" (click)="delay()" class="btn btn-default">
-      Delay
-    </button>
+    <button *ngIf="flights.length > 0" (click)="delay()" class="btn btn-default">Delay</button>
 
-    <div *ngIf="flights.length > 0">
-      {{ flights.length }} flights found!
-    </div>
+    <div *ngIf="flights.length > 0">{{ flights.length }} flights found!</div>
   </div>
 </form>
-
 
 <div class="row">
   <div *ngFor="let f of flights$ | async" class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3">

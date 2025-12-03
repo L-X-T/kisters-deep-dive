@@ -1,0 +1,15 @@
+@let errors = validationErrors();
+@if (errors) {
+  @if (errors['required']) {
+    <div class="text-danger">{{ fieldLabel() }} is required.</div>
+  }
+  @if (errors['minlength']) {
+    <div class="text-danger">{{ fieldLabel() }} minlength is 3.</div>
+  }
+  @if (errors['maxlength']) {
+    <div class="text-danger">{{ fieldLabel() }} maxlength is 15.</div>
+  }
+  @if (errors['pattern']) {
+    <div class="text-danger">{{ fieldLabel() }} has invalid input.</div>
+  }
+}

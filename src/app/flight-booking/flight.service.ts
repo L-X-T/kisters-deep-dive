@@ -12,8 +12,8 @@ import { DefaultFlightService } from './default-flight.service';
   deps: [HttpClient]
 })
 export abstract class FlightService {
-  private readonly http = inject(HttpClient);
-  private readonly url = 'https://demo.angulararchitects.io/api/Flight';
+  protected readonly http = inject(HttpClient);
+  // private readonly url = 'https://demo.angulararchitects.io/api/Flight';
 
   // We will refactor this to an observable in a later exercise!
   flights: Flight[] = [];

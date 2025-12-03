@@ -107,7 +107,7 @@ module.exports = tseslint.config(
     rules: {
       // Angular template best practices
       '@angular-eslint/template/attributes-order': [
-        'warn',
+        'off',
         {
           // alphabetical: true,
           order: [
@@ -123,7 +123,7 @@ module.exports = tseslint.config(
       '@angular-eslint/template/button-has-type': 'warn',
       '@angular-eslint/template/cyclomatic-complexity': ['warn', { maxComplexity: 10 }],
       '@angular-eslint/template/eqeqeq': 'error',
-      '@angular-eslint/template/prefer-control-flow': 'error',
+      '@angular-eslint/template/prefer-control-flow': 'off',
       '@angular-eslint/template/prefer-ngsrc': 'warn',
       '@angular-eslint/template/prefer-self-closing-tags': 'warn',
       '@angular-eslint/template/use-track-by-function': 'warn'

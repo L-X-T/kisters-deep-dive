@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Flight } from './flight';
@@ -7,12 +7,13 @@ import { FlightService } from './flight.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DefaultFlightService implements FlightService {
+export class DefaultFlightService {
+  protected readonly url = 'https://demo.angulararchitects.io/api/Flight';
+  protected readonly http = inject(HttpClient);
+
   flights: Flight[] = [];
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]);
   readonly flights$ = this.flightsSubject.asObservable();
-
-  constructor(public http: HttpClient) {}
 
   load(from: string, to: string): void {
     const unhandledSubscription = this.find(from, to).subscribe({

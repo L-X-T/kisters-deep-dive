@@ -11,9 +11,10 @@ import { FlightBookingComponent } from './flight-booking.component';
 import { FlightEditComponent } from './flight-edit/flight-edit.component';
 import { FormsModule } from '@angular/forms';
 import { AirportComponent } from './airport/airport.component';
+import { FlightValidationErrorsComponent } from './flight-validation-errors/flight-validation-errors.component';
 
 @NgModule({
-  imports: [RouterModule.forChild(FLIGHT_BOOKING_ROUTES), FormsModule, SharedModule, AirportComponent],
+  imports: [RouterModule.forChild(FLIGHT_BOOKING_ROUTES), FormsModule, SharedModule, AirportComponent, FlightValidationErrorsComponent],
   declarations: [
     FlightSearchComponent,
     FlightCardComponent,
